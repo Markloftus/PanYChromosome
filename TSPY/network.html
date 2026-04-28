@@ -1,0 +1,250 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 100%;
+                 height: 600px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "lightblue", "id": "ESG:1", "label": "ESG:1", "realsize": 1294, "samplesize": 110, "shape": "dot", "size": 8}, {"color": "lightblue", "id": "ESG:3", "label": "ESG:3", "realsize": 368, "samplesize": 108, "shape": "dot", "size": 6}, {"color": "lightblue", "id": "ESG:6", "label": "ESG:6", "realsize": 200, "samplesize": 98, "shape": "dot", "size": 6}, {"color": "lightblue", "id": "ESG:7", "label": "ESG:7", "realsize": 130, "samplesize": 96, "shape": "dot", "size": 5}, {"color": "lightblue", "id": "ESG:10", "label": "ESG:10", "realsize": 72, "samplesize": 63, "shape": "dot", "size": 5}, {"color": "lightblue", "id": "ESG:11", "label": "ESG:11", "realsize": 64, "samplesize": 60, "shape": "dot", "size": 5}, {"color": "lightblue", "id": "ESG:13", "label": "ESG:13", "realsize": 55, "samplesize": 35, "shape": "dot", "size": 5}, {"color": "black", "id": "ESG:14", "label": "ESG:14", "realsize": 53, "samplesize": 51, "shape": "dot", "size": 4}, {"color": "lightblue", "id": "ESG:15", "label": "ESG:15", "realsize": 40, "samplesize": 38, "shape": "dot", "size": 4}, {"color": "black", "id": "ESG:17", "label": "ESG:17", "realsize": 18, "samplesize": 18, "shape": "dot", "size": 3}, {"color": "lightblue", "id": "ESG:19", "label": "ESG:19", "realsize": 8, "samplesize": 8, "shape": "dot", "size": 3}, {"color": "lightblue", "id": "ESG:27", "label": "ESG:27", "realsize": 4, "samplesize": 4, "shape": "dot", "size": 2}, {"color": "red", "id": "ESG:29", "label": "ESG:29", "realsize": 4, "samplesize": 1, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:32", "label": "ESG:32", "realsize": 3, "samplesize": 2, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:33", "label": "ESG:33", "realsize": 3, "samplesize": 3, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:34", "label": "ESG:34", "realsize": 3, "samplesize": 3, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:36", "label": "ESG:36", "realsize": 3, "samplesize": 3, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:41", "label": "ESG:41", "realsize": 3, "samplesize": 3, "shape": "dot", "size": 2}, {"color": "black", "id": "ESG:50", "label": "ESG:50", "realsize": 3, "samplesize": 3, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:53", "label": "ESG:53", "realsize": 2, "samplesize": 2, "shape": "dot", "size": 1}, {"color": "lightblue", "id": "ESG:55", "label": "ESG:55", "realsize": 2, "samplesize": 2, "shape": "dot", "size": 1}, {"color": "lightblue", "id": "ESG:58", "label": "ESG:58", "realsize": 2, "samplesize": 2, "shape": "dot", "size": 1}, {"color": "lightblue", "id": "ESG:60", "label": "ESG:60", "realsize": 2, "samplesize": 2, "shape": "dot", "size": 1}, {"color": "lightblue", "id": "ESG:61", "label": "ESG:61", "realsize": 2, "samplesize": 2, "shape": "dot", "size": 1}, {"color": "lightblue", "id": "ESG:63", "label": "ESG:63", "realsize": 2, "samplesize": 2, "shape": "dot", "size": 1}, {"color": "lightblue", "id": "ESG:64", "label": "ESG:64", "realsize": 2, "samplesize": 2, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:67", "label": "ESG:67", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:68", "label": "ESG:68", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:70", "label": "ESG:70", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:71", "label": "ESG:71", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:75", "label": "ESG:75", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:76", "label": "ESG:76", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:79", "label": "ESG:79", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:80", "label": "ESG:80", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:81", "label": "ESG:81", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:86", "label": "ESG:86", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:88", "label": "ESG:88", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:89", "label": "ESG:89", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:90", "label": "ESG:90", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:91", "label": "ESG:91", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:92", "label": "ESG:92", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:94", "label": "ESG:94", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:95", "label": "ESG:95", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "lightblue", "id": "ESG:28", "label": "ESG:28", "realsize": 4, "samplesize": 4, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:56", "label": "ESG:56", "realsize": 2, "samplesize": 2, "shape": "dot", "size": 1}, {"color": "lightblue", "id": "ESG:2", "label": "ESG:2", "realsize": 401, "samplesize": 110, "shape": "dot", "size": 6}, {"color": "lightblue", "id": "ESG:5", "label": "ESG:5", "realsize": 202, "samplesize": 104, "shape": "dot", "size": 6}, {"color": "lightblue", "id": "ESG:8", "label": "ESG:8", "realsize": 99, "samplesize": 53, "shape": "dot", "size": 5}, {"color": "lightblue", "id": "ESG:12", "label": "ESG:12", "realsize": 61, "samplesize": 60, "shape": "dot", "size": 5}, {"color": "lightblue", "id": "ESG:35", "label": "ESG:35", "realsize": 3, "samplesize": 3, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:38", "label": "ESG:38", "realsize": 3, "samplesize": 3, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:45", "label": "ESG:45", "realsize": 3, "samplesize": 2, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:52", "label": "ESG:52", "realsize": 2, "samplesize": 2, "shape": "dot", "size": 1}, {"color": "lightblue", "id": "ESG:54", "label": "ESG:54", "realsize": 2, "samplesize": 2, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:65", "label": "ESG:65", "realsize": 2, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:66", "label": "ESG:66", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:72", "label": "ESG:72", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:73", "label": "ESG:73", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:78", "label": "ESG:78", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:87", "label": "ESG:87", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:110", "label": "ESG:110", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "lightblue", "id": "ESG:22", "label": "ESG:22", "realsize": 5, "samplesize": 4, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:23", "label": "ESG:23", "realsize": 5, "samplesize": 4, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:24", "label": "ESG:24", "realsize": 5, "samplesize": 5, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:25", "label": "ESG:25", "realsize": 4, "samplesize": 4, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:39", "label": "ESG:39", "realsize": 3, "samplesize": 3, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:42", "label": "ESG:42", "realsize": 3, "samplesize": 3, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:48", "label": "ESG:48", "realsize": 3, "samplesize": 2, "shape": "dot", "size": 2}, {"color": "red", "id": "ESG:107", "label": "ESG:107", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:108", "label": "ESG:108", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:109", "label": "ESG:109", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "lightblue", "id": "ESG:4", "label": "ESG:4", "realsize": 207, "samplesize": 99, "shape": "dot", "size": 6}, {"color": "lightblue", "id": "ESG:30", "label": "ESG:30", "realsize": 4, "samplesize": 4, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:44", "label": "ESG:44", "realsize": 3, "samplesize": 3, "shape": "dot", "size": 2}, {"color": "red", "id": "ESG:74", "label": "ESG:74", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "lightblue", "id": "ESG:37", "label": "ESG:37", "realsize": 3, "samplesize": 3, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:49", "label": "ESG:49", "realsize": 3, "samplesize": 3, "shape": "dot", "size": 2}, {"color": "red", "id": "ESG:62", "label": "ESG:62", "realsize": 2, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:99", "label": "ESG:99", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "lightblue", "id": "ESG:20", "label": "ESG:20", "realsize": 7, "samplesize": 7, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:59", "label": "ESG:59", "realsize": 2, "samplesize": 2, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:93", "label": "ESG:93", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:102", "label": "ESG:102", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:103", "label": "ESG:103", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "lightblue", "id": "ESG:16", "label": "ESG:16", "realsize": 25, "samplesize": 25, "shape": "dot", "size": 4}, {"color": "lightblue", "id": "ESG:21", "label": "ESG:21", "realsize": 6, "samplesize": 6, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:26", "label": "ESG:26", "realsize": 4, "samplesize": 4, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:57", "label": "ESG:57", "realsize": 2, "samplesize": 2, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:97", "label": "ESG:97", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "black", "id": "ESG:104", "label": "ESG:104", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "lightblue", "id": "ESG:46", "label": "ESG:46", "realsize": 3, "samplesize": 3, "shape": "dot", "size": 2}, {"color": "lightblue", "id": "ESG:9", "label": "ESG:9", "realsize": 91, "samplesize": 91, "shape": "dot", "size": 5}, {"color": "lightblue", "id": "ESG:18", "label": "ESG:18", "realsize": 14, "samplesize": 14, "shape": "dot", "size": 3}, {"color": "red", "id": "ESG:82", "label": "ESG:82", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:83", "label": "ESG:83", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:84", "label": "ESG:84", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:85", "label": "ESG:85", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "black", "id": "ESG:100", "label": "ESG:100", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:101", "label": "ESG:101", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "lightblue", "id": "ESG:31", "label": "ESG:31", "realsize": 3, "samplesize": 3, "shape": "dot", "size": 2}, {"color": "red", "id": "ESG:96", "label": "ESG:96", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "red", "id": "ESG:98", "label": "ESG:98", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "black", "id": "ESG:51", "label": "ESG:51", "realsize": 2, "samplesize": 2, "shape": "dot", "size": 1}, {"color": "black", "id": "ESG:105", "label": "ESG:105", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "black", "id": "ESG:106", "label": "ESG:106", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "lightblue", "id": "ESG:40", "label": "ESG:40", "realsize": 3, "samplesize": 3, "shape": "dot", "size": 2}, {"color": "black", "id": "ESG:43", "label": "ESG:43", "realsize": 3, "samplesize": 3, "shape": "dot", "size": 2}, {"color": "black", "id": "ESG:77", "label": "ESG:77", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "lightblue", "id": "ESG:47", "label": "ESG:47", "realsize": 3, "samplesize": 3, "shape": "dot", "size": 2}, {"color": "red", "id": "ESG:69", "label": "ESG:69", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1}, {"color": "black", "id": "ESG:111", "label": "ESG:111", "realsize": 1, "samplesize": 1, "shape": "dot", "size": 1.0}]);
+                  edges = new vis.DataSet([{"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:3", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:6", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:7", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:10", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:11", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:13", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:14", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:15", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:17", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:19", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:27", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:29", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:32", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:33", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:34", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:36", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:41", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:50", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:53", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:55", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:58", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:60", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:61", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:63", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:64", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:67", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:68", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:70", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:71", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:75", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:76", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:79", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:80", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:81", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:86", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:88", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:89", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:90", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:91", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:92", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:94", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:1", "match": true, "to": "ESG:95", "width": 1}, {"distance_from_src": 0.005633802816901409, "from": "ESG:1", "match": true, "to": "ESG:28", "width": 1}, {"distance_from_src": 0.005633802816901409, "from": "ESG:1", "match": true, "to": "ESG:56", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:2", "match": true, "to": "ESG:5", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:2", "match": true, "to": "ESG:8", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:2", "match": true, "to": "ESG:12", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:2", "match": true, "to": "ESG:35", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:2", "match": true, "to": "ESG:38", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:2", "match": true, "to": "ESG:45", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:2", "match": true, "to": "ESG:52", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:2", "match": true, "to": "ESG:54", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:2", "match": true, "to": "ESG:65", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:2", "match": true, "to": "ESG:66", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:2", "match": true, "to": "ESG:72", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:2", "match": true, "to": "ESG:73", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:2", "match": true, "to": "ESG:78", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:2", "match": true, "to": "ESG:87", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:2", "match": true, "to": "ESG:110", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:3", "match": true, "to": "ESG:22", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:3", "match": true, "to": "ESG:23", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:3", "match": true, "to": "ESG:24", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:3", "match": true, "to": "ESG:25", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:3", "match": true, "to": "ESG:39", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:3", "match": true, "to": "ESG:42", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:3", "match": true, "to": "ESG:48", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:3", "match": true, "to": "ESG:107", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:3", "match": true, "to": "ESG:108", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:3", "match": true, "to": "ESG:109", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:4", "match": true, "to": "ESG:5", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:4", "match": true, "to": "ESG:8", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:4", "match": true, "to": "ESG:30", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:4", "match": true, "to": "ESG:44", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:4", "match": true, "to": "ESG:74", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:5", "match": true, "to": "ESG:37", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:5", "match": true, "to": "ESG:49", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:5", "match": true, "to": "ESG:62", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:5", "match": true, "to": "ESG:99", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:6", "match": true, "to": "ESG:20", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:6", "match": true, "to": "ESG:25", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:6", "match": true, "to": "ESG:59", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:6", "match": true, "to": "ESG:93", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:6", "match": true, "to": "ESG:102", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:6", "match": true, "to": "ESG:103", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:7", "match": true, "to": "ESG:16", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:7", "match": true, "to": "ESG:21", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:7", "match": true, "to": "ESG:24", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:7", "match": true, "to": "ESG:26", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:7", "match": true, "to": "ESG:57", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:7", "match": true, "to": "ESG:97", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:7", "match": true, "to": "ESG:104", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:8", "match": true, "to": "ESG:46", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:9", "match": true, "to": "ESG:13", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:9", "match": true, "to": "ESG:18", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:9", "match": true, "to": "ESG:95", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:10", "match": true, "to": "ESG:21", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:10", "match": true, "to": "ESG:48", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:10", "match": true, "to": "ESG:59", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:10", "match": true, "to": "ESG:82", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:10", "match": true, "to": "ESG:83", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:10", "match": true, "to": "ESG:84", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:10", "match": true, "to": "ESG:85", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:11", "match": true, "to": "ESG:100", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:11", "match": true, "to": "ESG:101", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:11", "match": true, "to": "ESG:107", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:12", "match": true, "to": "ESG:31", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:12", "match": true, "to": "ESG:96", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:12", "match": true, "to": "ESG:98", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:13", "match": true, "to": "ESG:23", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:13", "match": true, "to": "ESG:97", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:14", "match": true, "to": "ESG:51", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:14", "match": true, "to": "ESG:104", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:14", "match": true, "to": "ESG:105", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:14", "match": true, "to": "ESG:106", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:15", "match": true, "to": "ESG:40", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:15", "match": true, "to": "ESG:42", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:15", "match": true, "to": "ESG:43", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:15", "match": true, "to": "ESG:85", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:16", "match": true, "to": "ESG:55", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:17", "match": true, "to": "ESG:43", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:17", "match": true, "to": "ESG:77", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:17", "match": true, "to": "ESG:100", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:19", "match": true, "to": "ESG:53", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:36", "match": true, "to": "ESG:67", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:40", "match": true, "to": "ESG:41", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:42", "match": true, "to": "ESG:47", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:44", "match": true, "to": "ESG:69", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:47", "match": true, "to": "ESG:48", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:47", "match": true, "to": "ESG:85", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:65", "match": true, "to": "ESG:96", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:79", "match": true, "to": "ESG:86", "width": 1}, {"distance_from_src": 0.0028169014084507044, "from": "ESG:84", "match": true, "to": "ESG:88", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

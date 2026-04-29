@@ -19,3 +19,14 @@ Code repo pertaining to a subset of analyses of the Pan-Y (joint HGSVC + HPRC) p
 * Pullhg38_ColorRegion_Part2_09102025.ipynb — Uses GRCh38 color-region k-mers to refine color-block coordinates across sample assemblies.
 * Pullhg38_ColorRegion_windows-Part1_AllSamplesRun-09102925-original.ipynb — Generates initial GRCh38-derived color-region windows across all samples using k-mer density and interval merging.
 * VisualizeColorBlock_overview_Part4.ipynb — Creates overview visualizations of AZFc color-block architecture across samples, integrating QC regions, gene annotations, copy-number data, and phylogenetic ordering.
+
+## DAZ_Submission:
+* DAZ_PSV_IDWork-part2.ipynb — Parses DAZ paralogous sequence variants, maps PSV alleles to DAZ1–DAZ4 using BLAT hits, and summarizes/visualizes PSV-based DAZ gene identity patterns.
+* DAZ_PSVs_patterns_part3.ipynb — Uses PSV placements and RepeatMasker context to identify recurring DAZ exon/RRM motif patterns and compare pre- versus post-LINE sequence structure.
+* DAZGenes_KMERs_part4.ipynb — Mines DAZ gene sequences for unique and multi-hit k-mers, then visualizes shared k-mer relationships among DAZ genes across samples.
+* DAZGenes_KMERs-wNTVisualization_part5.ipynb — Extends the DAZ k-mer analysis by mapping shared k-mers back onto nucleotide positions and visualizing their locations across paired DAZ gene sequences.
+* Part1_Publication_DAZ_Exons_AllSamples-HPRC-HGSVC3-CEPH_DAZNAMES-wRepeatMaskerInformation-additionalExonInformatoin-Submission.ipynb — Builds publication-ready DAZ exon annotations across HPRC/HGSVC/CEPH samples, integrating DAZ names, exon structure, RepeatMasker information, haplogroups, and phylogenetic ordering for visualization.
+
+## DNMs_Yq12
+* Visualize_DNM_Yq12_SNVs-Submission.ipynb — Integrates validated Yq12 de novo SNVs with repeat architecture, donor metrics, and father–son pair metadata to generate publication-ready visualizations of SNV positions, clustering, and candidate gene conversion events across Yq12.
+* DNM_GeneConversion_DonorCheck_Submission_04232026.ipynb — Implements the full seed-and-extend donor-discovery and statistical classification pipeline for Yq12 de novo SNVs, identifying homologous donor loci, testing gene conversion support across homology thresholds, collapsing concordant SNV clusters, and classifying events as likely de novo mutation or gene conversion.

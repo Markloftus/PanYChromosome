@@ -1,5 +1,5 @@
 # 142 Y chromosomes
-Code repo pertaining to a subset of analyses of the Pan-Y (joint HGSVC + HPRC) project. (ignore file numbering as things change during analyses)
+Code repo pertaining to a subset of analyses of the Pan-Y (joint HGSVC + HPRC) project (ignore file numbering as things change during analyses).
 
 ## AZFc_Submission:
 * ColorBlock_Part2.5_06112025_compareArang.ipynb — Compares refined AZFc color-block annotations against BED annotations (produced by Arang) and appends matching annotation information to each sample’s color-block dataframe.

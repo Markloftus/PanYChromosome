@@ -20,6 +20,11 @@ Code repo pertaining to a subset of analyses of the Pan-Y (joint HGSVC + HPRC) p
 * Pullhg38_ColorRegion_windows-Part1_AllSamplesRun-09102925-original.ipynb — Generates initial GRCh38-derived color-region windows across all samples using k-mer density and interval merging.
 * VisualizeColorBlock_overview_Part4.ipynb — Creates overview visualizations of AZFc color-block architecture across samples, integrating QC regions, gene annotations, copy-number data, and phylogenetic ordering.
 
+## Constraint:
+* Yq12_Constraint_Testing_Submission.ipynb - Tests the evolutionary dynamics of the two major Yq12 repeat families, DYZ1 and DYZ2, using phylogenetically informed models. The notebook evaluates whether changes in DYZ1 and DYZ2 are evolutionarily coupled, whether their evolutionary rates differ, and whether these patterns are supported by the Y-chromosome phylogeny.
+* AZFc_Constraint_Testing_Submission.ipynb - Tests whether the observed diversity of human AZFc architectures is more structurally constrained than expected under a permissive model of NAHR-mediated rearrangement. The notebook reconstructs architecture changes on the Y phylogeny and uses continuous-time simulations of inversions, deletions, and duplications to compare the observed range of AZFc structures with the null expectation.
+* Centromere_Constraint_Testing_Submission.ipynb - Tests whether the functional Y centromere domain is constrained relative to variation in the surrounding DYZ3 α-satellite array. The notebook evaluates phylogenetic signal, scaling between CDR and total DYZ3 array size, and whether CDR size is less variable than expected under evolutionary models fitted to the surrounding satellite array.
+
 ## DAZ_Submission:
 * DAZ_PSV_IDWork-part2.ipynb — Parses DAZ paralogous sequence variants, maps PSV alleles to DAZ1–DAZ4 using BLAT hits, and summarizes/visualizes PSV-based DAZ gene identity patterns.
 * DAZ_PSVs_patterns_part3.ipynb — Uses PSV placements and RepeatMasker context to identify recurring DAZ exon/RRM motif patterns and compare pre- versus post-LINE sequence structure.
